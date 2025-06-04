@@ -8,7 +8,7 @@ async function getSummary(transcript: unknown) {
   try {
     const response = await genAI.models.generateContent({
       model: "gemini-2.0-flash",
-      contents: `Analyze the following YouTube transcript and summarize the key points:\n\n${transcript}. Keep the summary concise and focused on the main ideas presented in the video. The output should be in paragraph form.`,
+      contents: `Analyze the following YouTube transcript and summarize the key points:\n\n${transcript}. Keep the summary concise (4-5 sentences) and focused on the main ideas presented in the video. Do not include any personal opinions or interpretations. Provide a clear and objective summary of the content. `,
     });
 
     const result = response.text; // or response.data, depending on the API
