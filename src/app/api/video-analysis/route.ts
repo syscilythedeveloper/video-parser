@@ -19,6 +19,8 @@ async function getSummary(transcript: unknown) {
   }
 }
 
+//function to get the timestamps of the video
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
