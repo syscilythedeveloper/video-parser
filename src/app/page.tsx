@@ -28,6 +28,9 @@ export default function Home() {
       setIsLoading(false);
     }
   };
+  const handleVideoTimestampClick = (timestamp: string) => {
+    console.log(`Clicked on timestamp: ${timestamp}`);
+  };
 
   useEffect(() => {}, [summary]);
 
@@ -138,7 +141,24 @@ export default function Home() {
                           key={idx}
                           className="text-gray-700 leading-relaxed text-lg"
                         >
-                          <strong>{topic.timestamp}:</strong> {topic.topic}
+                          <span className="flex items-center">
+                            <button
+                              type="button"
+                              aria-label={`Jump to timestamp ${topic.timestamp}`}
+                              title={`Jump to timestamp ${topic.timestamp}`}
+                              onClick={() =>
+                                handleVideoTimestampClick(topic.timestamp)
+                              }
+                              className="text-gray-900 font-semibold bg-gray-200 border border-gray-400 rounded px-3 py-1 mr-2 shadow hover:bg-gray-300 hover:shadow-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                            >
+                              <strong>{topic.timestamp}</strong>
+                            </button>{" "}
+                            <span className="flex items-center">
+                              {topic.topic}
+                            </span>
+                            <br />
+                            <br />
+                          </span>
                         </p>
                       ))}
                     </div>
