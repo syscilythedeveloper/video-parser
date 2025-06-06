@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
+type Topic = { timestamp: string; topic: string };
+type Summary = { topics: Topic[] } | null;
 
 export default function Home() {
   const [youtubeLink, setYoutubeLink] = useState("");
-  const [summary, setSummary] = useState("");
+  const [summary, setSummary] = useState<Summary>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -102,6 +104,22 @@ export default function Home() {
                 </button>
               </div>
             </div>
+            {youtubeLink && (
+              <div className="mb-8 flex justify-center">
+                <iframe
+                  width="560"
+                  height="315"
+                  src={`https://www.youtube.com/embed/${
+                    youtubeLink.split("v=")[1]?.split("&")[0] || ""
+                  }`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="rounded-xl shadow-lg w-full max-w-2xl aspect-video"
+                ></iframe>
+              </div>
+            )}
 
             {/* Summary Display */}
             {summary && (
@@ -113,9 +131,18 @@ export default function Home() {
                   </h2>
                 </div>
                 <div className="prose prose-lg max-w-none">
-                  <p className="text-gray-700 leading-relaxed text-lg">
-                    {summary}
-                  </p>
+                  {summary && summary.topics && (
+                    <div>
+                      {summary.topics.map((topic, idx) => (
+                        <p
+                          key={idx}
+                          className="text-gray-700 leading-relaxed text-lg"
+                        >
+                          <strong>{topic.timestamp}:</strong> {topic.topic}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

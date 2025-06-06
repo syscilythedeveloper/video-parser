@@ -1,25 +1,5 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { transcript } from "./sample_transcript";
-import { GoogleGenAI } from "@google/genai";
-const genAI = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY || "",
-});
-
-async function getSummary(transcript: unknown) {
-  try {
-    const response = await genAI.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: `Analyze the following YouTube transcript and summarize the key points:\n\n${transcript}. Keep the summary concise (4-5 sentences) and focused on the main ideas presented in the video. Do not include any personal opinions or interpretations. Provide a clear and objective summary of the content. `,
-    });
-
-    const result = response.text; // or response.data, depending on the API
-    console.log("Analysis complete:", result);
-    return result;
-  } catch (error) {
-    console.error("Error in getTranscript:", error);
-  }
-}
-
-//function to get the timestamps of the video
 
 export async function POST(req: Request) {
   try {
@@ -31,7 +11,6 @@ export async function POST(req: Request) {
 
     const parserUrl = `https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=${videoId}`;
     console.log("Parser URL:", parserUrl);
-    //console.log("Sample Transcript:", sample_transcript);
 
     // const options = {
     //   method: "GET",
@@ -41,20 +20,47 @@ export async function POST(req: Request) {
     //   },
     // };
 
-    // const response = await fetch(parserUrl, options);
-    // const data = await response.json();
-    //const transcript = data.transcript
-    // console.log("API Response:", transcript);
-    const allText = transcript.transcript.map((item) => item.text).join(" ");
+    //const response = await fetch(parserUrl, options);
+    //const data = await response.json();
+    //const transcript = data.transcript;
+    const sample_transcript = transcript.transcript;
 
-    const summary = await getSummary(allText);
-    console.log("Summary:", summary);
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
+    const prompt = `Analyze the following transcript and providea breakdown of the main topics that are discussed in the video,   with timestamps for each topic..  
+      <VideoTranscript>
+      ${sample_transcript.map((t: { offset: string; text: string }) => `[${t.offset}] ${t.text}`).join("\n")}
+
+      <VideoTranscript/>
+
+    CRITICAL: Your response must be raw JSON only. Do not use code blocks, markdown formatting, or any wrapper text. Start your response immediately with the opening brace {
+
+    Required JSON format: 
+    {
+      "topics": [
+        {
+          "timestamp": "HH:MM:SS",
+          "topic": "Topic name"
+        }
+      ]
+    }
+    `;
+
+    const result = await model.generateContent([prompt]);
+
+    const summaryRaw = result.response.text();
+    const cleaned = summaryRaw
+      .replace(/^```json\s*/i, "") // Remove starting ```json (case-insensitive)
+      .replace(/```$/, "") // Remove ending ```
+      .trim();
+    const summaryJson = JSON.parse(cleaned);
+    console.log("Parsed summary JSON:", summaryJson);
 
     return new Response(
       JSON.stringify({
         message: "Video ID extracted successfully",
         videoId: videoId,
-        summary: summary,
+        summary: summaryJson,
       }),
       {
         status: 200,
@@ -63,16 +69,6 @@ export async function POST(req: Request) {
         },
       }
     );
-    //   JSON.stringify({
-    //     message: "Video ID extracted successfully",
-    //     videoId: videoId,
-    //   }),
-    //   {
-    //     status: 200,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
   } catch (error) {
     console.log("Error:", error);
   }
