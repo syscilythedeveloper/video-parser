@@ -2,20 +2,51 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    //console.log("The question is: ", body);
-    console.log("Last question is: ", body[body.length - 1].content);
-    const lastQuestion = body[body.length - 1].content;
-    //add in ai agent to process the question
+    const transcript = await req.json();
+
+    const topics = transcript[transcript.length - 1].topics;
+
+    const topicsString = topics
+      .map(
+        (t: {
+          timestamp: string;
+          topic: string;
+          description?: string;
+          keywords: string;
+        }) =>
+          `[${t.timestamp}] ${t.topic}${t.description ? ": " + t.description : ""}${t.keywords ? " (Keywords: " + t.keywords + ")" : ""}`
+      )
+      .join("\n");
+    console.log("Formatted Topics:", topicsString);
+    const userQuestion = transcript[1].content;
+    console.log("Last Question:", userQuestion);
+
+    // //     //     //add in ai agent to process the question
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
-    const prompt = `You are a helpful AI assistant. Answer the user's question
-    User's question: ${lastQuestion}
-    Please provide a concise and informative answer.`;
+    const prompt = `You are a helpful AI assistant. Use the following topics and their timestampes as your knowledge base : ${topicsString}.
+
+            Use the topics to answer the user's question: ${userQuestion}. The user may ask about specific topics, events, or details mentioned in the topics.
+
+            Provide the associated timestamp for each topic in your response. If the user asks a question that is not covered by the topics, politely inform them that that the video doesn't answer that directly.
+
+            Return the timestamp and topic title in the following format:
+
+            timestamp: HH:MM:SS - Your answer here
+
+
+           INSTRUCTIONS:
+          1. Find the most relevant topic(s) from the provided knowledge base
+          2. Use the timestamp from the matching topic
+          3. Provide a comprehensive answer based on the topic content
+          4. If multiple topics are relevant, use the timestamp of the most relevant one
+          5. If the question is not covered by the topics, politely inform the user that the video doesn't answer that directly, but you can provide a general answer based on the topics provided.
+          6. If the question is not related to the topics, politely inform the user of the main topics covered in the video and suggest they ask a question related to those topics.
+
+            Do not inlcude formatting in your response, just provide the answer in plain text.
+    `;
     const result = await model.generateContent([prompt]);
     const aiResponse = result.response.text();
-    console.log("AI Response:", aiResponse);
-    console.log("jas");
 
     return new Response(aiResponse, {
       headers: { "Content-Type": "text/plain" },

@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 
 import ChatBox from "./components/chatbox";
-type Topic = { timestamp: string; topic: string };
-type Summary = { topics: Topic[] } | null;
+export type Topic = { timestamp: string; topic: string };
+export type Summary = { topics: Topic[] } | null;
 
 export default function Home() {
   const [youtubeLink, setYoutubeLink] = useState("");
@@ -174,7 +174,12 @@ export default function Home() {
               </div>
             )}
 
-            {summary && summary.topics && <ChatBox />}
+            {summary && summary.topics && (
+              <ChatBox
+                topics={summary}
+                videoId={youtubeLink.split("v=")[1]?.split("&")[0] || ""}
+              />
+            )}
 
             {/* Loading State */}
             {isLoading && (

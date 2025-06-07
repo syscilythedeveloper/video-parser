@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { sample_transcript } from "./sample_transcript";
+//import { sample_transcript } from "./sample_transcript";
 
 export async function POST(req: Request) {
   try {
@@ -12,19 +12,19 @@ export async function POST(req: Request) {
     const parserUrl = `https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=${videoId}`;
     console.log("Parser URL:", parserUrl);
 
-    // const options = {
-    //   method: "GET",
-    //   headers: {
-    //     "x-rapidapi-key": process.env.RAPIDAPI_KEY || "",
-    //     "x-rapidapi-host": "youtube-transcript3.p.rapidapi.com",
-    //   },
-    // };
+    const options = {
+      method: "GET",
+      headers: {
+        "x-rapidapi-key": process.env.RAPIDAPI_KEY || "",
+        "x-rapidapi-host": "youtube-transcript3.p.rapidapi.com",
+      },
+    };
 
-    // const response = await fetch(parserUrl, options);
-    // const data = await response.json();
-    // const transcript = data.transcript;
-    // console.log("Transcript data:", transcript);
-    const transcript = sample_transcript;
+    const response = await fetch(parserUrl, options);
+    const data = await response.json();
+    const transcript = data.transcript;
+    console.log("Transcript data:", transcript);
+    // const transcript = sample_transcript;
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
@@ -100,7 +100,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   } catch (error) {
     console.log("Error:", error);
@@ -114,7 +114,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 }

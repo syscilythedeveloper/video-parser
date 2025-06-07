@@ -1,4 +1,5 @@
 "use client";
+import { Summary } from "../page";
 
 import { Button, TextField } from "@mui/material";
 import { Box, Stack } from "@mui/system";
@@ -6,7 +7,12 @@ import { useState, useRef, useEffect } from "react";
 import { TiMessageTyping } from "react-icons/ti";
 import { TypeAnimation } from "react-type-animation";
 
-const ChatBox = () => {
+type ChatBoxProps = {
+  videoId?: string;
+  topics?: Summary;
+};
+
+const ChatBox = ({ videoId, topics }: ChatBoxProps) => {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -37,7 +43,11 @@ const ChatBox = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([...messages, { role: "user", content: message }]),
+        body: JSON.stringify([
+          { ...messages },
+          { role: "user", content: message },
+          { topics: topics?.topics || [] },
+        ]),
       });
 
       if (!response.ok) {
@@ -57,11 +67,13 @@ const ChatBox = () => {
           setMessages((prevMessages) => {
             const updatedMessages = [...prevMessages];
             const lastMessageIndex = updatedMessages.length - 1;
-            updatedMessages[lastMessageIndex].content += text;
+            updatedMessages[lastMessageIndex].content = text;
             return updatedMessages;
           });
         }
       }
+      console.log("Video ID:", videoId);
+      console.log("Topics:", topics?.topics);
       console.log("Message sent and response received successfully");
     } catch (error) {
       console.error("Failed to send or receive message:", error);
