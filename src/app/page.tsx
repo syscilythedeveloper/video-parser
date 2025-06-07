@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+
+import ChatBox from "./components/chatbox";
 type Topic = { timestamp: string; topic: string };
 type Summary = { topics: Topic[] } | null;
 
@@ -138,7 +140,7 @@ export default function Home() {
                     Video Summary
                   </h2>
                 </div>
-                <div className="prose prose-lg max-w-none">
+                <div className="prose prose-lg max-w-none max-h-80 overflow-y-auto">
                   {summary && summary.topics && (
                     <div>
                       {summary.topics.map((topic, idx) => (
@@ -171,6 +173,8 @@ export default function Home() {
                 </div>
               </div>
             )}
+
+            {summary && summary.topics && <ChatBox />}
 
             {/* Loading State */}
             {isLoading && (
