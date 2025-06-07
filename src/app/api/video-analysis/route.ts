@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
       <VideoTranscript/>
 
-    CRITICAL: Your response must be raw JSON only. Do not use code blocks, markdown formatting, or any wrapper text. Start your response immediately with the opening brace {
+    CRITICAL: Your response must be raw JSON only. Do not use code blocks, markdown formatting, or any wrapper text. Start your response immediately with the opening brace. If the seconds are over 59, format them as minutes and seconds. For example, 93 seconds should be formatted as 01:33.{
 
     Required JSON format: 
     {

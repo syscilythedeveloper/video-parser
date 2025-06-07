@@ -30,6 +30,11 @@ export default function Home() {
   };
   const handleVideoTimestampClick = (timestamp: string) => {
     console.log(`Clicked on timestamp: ${timestamp}`);
+    const timeAsNumber = timestamp
+      .split(":")
+      .reduce((acc, time) => acc * 60 + parseInt(time), 0);
+
+    console.log(`Time in seconds: ${timeAsNumber}`);
   };
 
   useEffect(() => {}, [summary]);
