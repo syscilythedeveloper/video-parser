@@ -57,6 +57,7 @@ const ChatBox = () => {
           });
         }
       }
+      console.log("Message sent and response received successfully");
     } catch (error) {
       console.error("Failed to send or receive message:", error);
     }
