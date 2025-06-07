@@ -2,8 +2,9 @@
 
 import { Button, TextField } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { TiMessageTyping } from "react-icons/ti";
+import { TypeAnimation } from "react-type-animation";
 
 const ChatBox = () => {
   const [messages, setMessages] = useState([
@@ -14,6 +15,10 @@ const ChatBox = () => {
     },
   ]);
   const [message, setMessage] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const sendMessage = async () => {
     if (message.trim() === "") return;
@@ -74,18 +79,21 @@ const ChatBox = () => {
       </div>
       <div className="mb-4">
         <Box
-          width="100vh"
+          width="825px"
           height="100vh"
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
           className="prose prose-lg max-w-none max-h-80 overflow-y-auto"
+          sx={{
+            backgroundColor: "white",
+            borderRadius: 2,
+            boxShadow: 3,
+          }}
         >
           <Stack
             direction="column"
-            width="700"
-            height="700px"
             border="1px solid black"
             p={2}
             spacing={3}
@@ -97,24 +105,36 @@ const ChatBox = () => {
               overflow="auto"
               maxHeight="100%"
             >
-              {messages.map((message, index) => (
-                <Box
-                  key={index}
-                  display="flex"
-                  justifyContent={
-                    message.role === "assistant" ? "flex-start" : "flex-end"
-                  }
-                >
+              {messages.map((message, index) => {
+                const isLast = index === messages.length - 1;
+                const isAssistant = message.role === "assistant";
+                const isLoading =
+                  isLast && isAssistant && message.content.trim() === "";
+
+                return (
                   <Box
-                    bgcolor={message.role === "assistant" ? "pink" : "purple"}
-                    color="white"
-                    borderRadius={16}
-                    p={3}
+                    key={index}
+                    display="flex"
+                    justifyContent={isAssistant ? "flex-start" : "flex-end"}
                   >
-                    {message.content}
+                    <Box
+                      bgcolor={isAssistant ? "gray" : "purple"}
+                      color="white"
+                      borderRadius={16}
+                      p={3}
+                    >
+                      {isLoading ? (
+                        <TypeAnimation
+                          sequence={["...", 100, "...", 100, "...", 100]}
+                        />
+                      ) : (
+                        message.content
+                      )}
+                    </Box>
                   </Box>
-                </Box>
-              ))}
+                );
+              })}
+              <div ref={messagesEndRef} />
             </Stack>
             <Stack
               direction="row"

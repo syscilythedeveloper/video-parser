@@ -23,8 +23,10 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Error processing request:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to process the request." }),
-      { status: 500 }
+      "Our AI agent is overloaded at the moment. Please try again later",
+      {
+        headers: { "Content-Type": "text/plain" },
+      }
     );
   }
 }
