@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import ChatBox from "./components/chatbox";
 import { VideoPlayer } from "./components/video-player";
+import timeFormatter from "./utils/timeFormatter";
 export type Topic = { timestamp: string; topic: string };
 export type Summary = { topics: Topic[] } | null;
 
@@ -35,23 +36,16 @@ export default function Home() {
   };
 
   const handleVideoDisplay = (timestamp: string) => {
-    console.log(`Clicked on timestamp: ${timestamp}`);
-    const timeAsNumber = timestamp
-      .split(":")
-      .reduce((acc, time) => acc * 60 + parseInt(time), 0);
+    const timeAsNumber = timeFormatter(timestamp);
 
     console.log(`Time in seconds: ${timeAsNumber}`);
-    // const new_src = `https://www.youtube.com/embed/${
-    //   youtubeLink.split("v=")[1]?.split("&")[0]
+
     const new_src = `https://www.youtube.com/embed/${
       videoId
     }?start=${timeAsNumber}`;
     console.log("New YouTube embed link:", new_src);
     setEmbedSrc(new_src);
   };
-
-  useEffect(() => {}, [summary]);
-  useEffect(() => {}, [videoId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -136,19 +130,6 @@ export default function Home() {
             </div>
             {embedSrc && (
               <div className="mb-8 flex justify-center">
-                {/* <iframe
-                  width="560"
-                  height="315"
-                  // src={`https://www.youtube.com/embed/${
-                  //   youtubeLink.split("v=")[1]?.split("&")[0]
-                  // }`}
-                  src={embedSrc}
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="rounded-xl shadow-lg w-full max-w-2xl aspect-video"
-                ></iframe> */}
                 <VideoPlayer src={embedSrc} />
               </div>
             )}

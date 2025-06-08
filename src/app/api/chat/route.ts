@@ -14,12 +14,11 @@ export async function POST(req: Request) {
           description?: string;
           keywords: string;
         }) =>
-          `[${t.timestamp}] ${t.topic}${t.description ? ": " + t.description : ""}${t.keywords ? " (Keywords: " + t.keywords + ")" : ""}`
+          `[${t.timestamp}] ${t.topic}${t.description ? ": " + t.description : ""}${t.keywords ? " (Keywords: " + t.keywords + ")" : ""}`,
       )
       .join("\n");
-    console.log("Formatted Topics:", topicsString);
+
     const userQuestion = transcript[1].content;
-    console.log("Last Question:", userQuestion);
 
     // //     //     //add in ai agent to process the question
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
@@ -30,18 +29,17 @@ export async function POST(req: Request) {
 
             Provide the associated timestamp for each topic in your response. If the user asks a question that is not covered by the topics, politely inform them that that the video doesn't answer that directly.
 
-            Return the timestamp and topic title in the following format:
-
-            timestamp: HH:MM:SS - Your answer here
+       
 
 
            INSTRUCTIONS:
           1. Find the most relevant topic(s) from the provided knowledge base
           2. Use the timestamp from the matching topic
           3. Provide a comprehensive answer based on the topic content
-          4. If multiple topics are relevant, use the timestamp of the most relevant one
-          5. If the question is not covered by the topics, politely inform the user that the video doesn't answer that directly, but you can provide a general answer based on the topics provided.
-          6. If the question is not related to the topics, politely inform the user of the main topics covered in the video and suggest they ask a question related to those topics.
+          4. Create a natural, flowing summary of the most relevant information
+          5. Weave timestamps naturally into the narrative (e.g., "the video explains X at 02:30")
+          6. If the question is not covered by the topics, politely inform the user that the video doesn't answer that directly, but you can provide a general answer based on the topics provided.
+          7. If the question is not related to the topics, politely inform the user of the main topics covered in the video and suggest they ask a question related to those topics.
 
             Do not inlcude formatting in your response, just provide the answer in plain text.
     `;
@@ -57,7 +55,7 @@ export async function POST(req: Request) {
       "Our AI agent is overloaded at the moment. Please try again later",
       {
         headers: { "Content-Type": "text/plain" },
-      }
+      },
     );
   }
 }

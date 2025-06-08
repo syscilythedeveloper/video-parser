@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     const transcript = sample_transcript;
     console.log("-----------THIS IS THE TRANSCRIPT MAP");
     console.log(
-      `${transcript.map((t: { offset: string; text: string }) => `[${t.offset}] ${t.text}`).join("\n")}`
+      `${transcript.map((t: { offset: string; text: string }) => `[${t.offset}] ${t.text}`).join("\n")}`,
     );
     //console.log("Transcript data:", transcript);
 
@@ -105,7 +105,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   } catch (error) {
     console.log("Error:", error);
@@ -119,7 +119,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 import { Summary } from "../page";
+import { renderContentWithTimestamps } from "./responseLinks";
 
 import { Button, TextField } from "@mui/material";
 import { Box, Stack } from "@mui/system";
@@ -104,12 +105,7 @@ const ChatBox = ({ videoId, topics }: ChatBoxProps) => {
             boxShadow: 3,
           }}
         >
-          <Stack
-            direction="column"
-            border="1px solid black"
-            p={2}
-            spacing={3}
-          >
+          <Stack direction="column" border="1px solid black" p={2} spacing={3}>
             <Stack
               direction="column"
               spacing={2}
@@ -140,7 +136,7 @@ const ChatBox = ({ videoId, topics }: ChatBoxProps) => {
                           sequence={["...", 100, "...", 100, "...", 100]}
                         />
                       ) : (
-                        message.content
+                        renderContentWithTimestamps(message.content)
                       )}
                     </Box>
                   </Box>
@@ -148,20 +144,14 @@ const ChatBox = ({ videoId, topics }: ChatBoxProps) => {
               })}
               <div ref={messagesEndRef} />
             </Stack>
-            <Stack
-              direction="row"
-              spacing={2}
-            >
+            <Stack direction="row" spacing={2}>
               <TextField
                 label="Message"
                 fullWidth
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
-              <Button
-                variant="contained"
-                onClick={sendMessage}
-              >
+              <Button variant="contained" onClick={sendMessage}>
                 Send
               </Button>
             </Stack>
