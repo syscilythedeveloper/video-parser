@@ -144,7 +144,6 @@ const ChatBox = ({ videoId, topics, onTimestampClick }: ChatBoxProps) => {
                       ) : (
                         renderContentWithTimestamps(
                           message.content,
-                          videoId ?? "",
                           onTimestampClick
                         )
                       )}

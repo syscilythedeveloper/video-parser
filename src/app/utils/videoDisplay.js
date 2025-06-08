@@ -13,7 +13,7 @@ export default function handleVideoDisplay(timestamp, videoId) {
 
   const new_src = `https://www.youtube.com/embed/${
     videoId
-  }?start=${timeAsNumber}`;
+  }?start=${timeAsNumber}&autoplay=1&mute=0`;
   console.log("New YouTube embed link:", new_src);
   return new_src;
 }

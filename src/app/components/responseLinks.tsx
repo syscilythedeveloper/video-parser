@@ -1,6 +1,6 @@
 export const renderContentWithTimestamps = (
   content: string,
-  videoId: string,
+
   onTimestampClick: (timestamp: string) => void
 ) => {
   // Split content by timestamp pattern and rebuild with React elements
@@ -17,10 +17,7 @@ export const renderContentWithTimestamps = (
       return (
         <button
           key={idx}
-          onClick={() =>
-            //console.log(`THE BUTTON WAS CLICKED WITH TIMESTAMP ${timestamp}`)
-            onTimestampClick(timestamp)
-          } // Replace with actual video seek logic
+          onClick={() => onTimestampClick(timestamp)}
           style={{
             background: "#1976d2",
             color: "white",
