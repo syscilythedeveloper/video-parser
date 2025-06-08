@@ -1,7 +1,7 @@
 export function VideoPlayer({ src }: { src: string }) {
   return (
     <iframe
-      key={src} // This ensures React remounts the iframe when src changes
+      key={src}
       width="560"
       height="315"
       src={src}

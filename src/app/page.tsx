@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-import ChatBox from "./components/chatbox";
+import ChatBox from "./components/Chat/chatbox";
 import { VideoPlayer } from "./components/video-player";
 import handleVideoDisplay from "./utils/videoDisplay";
 export type Topic = { timestamp: string; topic: string };
@@ -178,7 +178,6 @@ export default function Home() {
             {summary && summary.topics && (
               <ChatBox
                 topics={summary}
-                videoId={videoId || ""}
                 onTimestampClick={handleChatTimeStampClick}
               />
             )}

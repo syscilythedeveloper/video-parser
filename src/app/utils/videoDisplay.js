@@ -9,8 +9,6 @@ export function timeFormatter(timestamp) {
 export default function handleVideoDisplay(timestamp, videoId) {
   const timeAsNumber = timeFormatter(timestamp);
 
-  console.log(`Time in seconds: ${timeAsNumber}`);
-
   const new_src = `https://www.youtube.com/embed/${
     videoId
   }?start=${timeAsNumber}&autoplay=1&mute=0`;

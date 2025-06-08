@@ -1,13 +1,11 @@
 export const renderContentWithTimestamps = (
   content: string,
 
-  onTimestampClick: (timestamp: string) => void
+  onTimestampClick: (timestamp: string) => void,
 ) => {
-  // Split content by timestamp pattern and rebuild with React elements
   console.log("Content received for rendering:", content);
 
   const parts = content.split(/(\[\d{1,2}:\d{2}(?::\d{2})?\])/g);
-  console.log("Split parts:", parts);
 
   return parts.map((part, idx) => {
     const timestampMatch = part.match(/\[(\d{1,2}:\d{2}(?::\d{2})?)\]/);

@@ -14,7 +14,7 @@ export async function POST(req: Request) {
           description?: string;
           keywords: string;
         }) =>
-          `[${t.timestamp}] ${t.topic}${t.description ? ": " + t.description : ""}${t.keywords ? " (Keywords: " + t.keywords + ")" : ""}`
+          `[${t.timestamp}] ${t.topic}${t.description ? ": " + t.description : ""}${t.keywords ? " (Keywords: " + t.keywords + ")" : ""}`,
       )
       .join("\n");
 
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
       "Our AI agent is overloaded at the moment. Please try again later",
       {
         headers: { "Content-Type": "text/plain" },
-      }
+      },
     );
   }
 }

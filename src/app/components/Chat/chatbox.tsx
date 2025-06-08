@@ -1,5 +1,5 @@
 "use client";
-import { Summary } from "../page";
+import { Summary } from "../../page";
 import { renderContentWithTimestamps } from "./responseLinks";
 
 import { Button, TextField } from "@mui/material";
@@ -14,7 +14,7 @@ type ChatBoxProps = {
   onTimestampClick: (timestamp: string) => void;
 };
 
-const ChatBox = ({ videoId, topics, onTimestampClick }: ChatBoxProps) => {
+const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -58,25 +58,22 @@ const ChatBox = ({ videoId, topics, onTimestampClick }: ChatBoxProps) => {
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
-      const result = "";
-      console.log(result);
 
       if (reader) {
+        let accumulatedText = "";
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
           const text = decoder.decode(value, { stream: true });
+          accumulatedText += text;
           setMessages((prevMessages) => {
             const updatedMessages = [...prevMessages];
             const lastMessageIndex = updatedMessages.length - 1;
-            updatedMessages[lastMessageIndex].content = text;
+            updatedMessages[lastMessageIndex].content = accumulatedText;
             return updatedMessages;
           });
         }
       }
-      console.log("Video ID:", videoId);
-      // console.log("Topics:", topics?.topics);
-      // console.log("Message sent and response received successfully");
     } catch (error) {
       console.error("Failed to send or receive message:", error);
     }

@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { sample_transcript } from "./sample_transcript";
+//import { sample_transcript } from "./sample_transcript";
 
 export async function POST(req: Request) {
   try {
@@ -9,27 +9,26 @@ export async function POST(req: Request) {
 
     console.log("Video ID arg:", videoId);
 
-    // const parserUrl = `https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=${videoId}`;
-    // console.log("Parser URL:", parserUrl);
+    const parserUrl = `https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=${videoId}`;
+    console.log("Parser URL:", parserUrl);
 
-    // const options = {
-    //   method: "GET",
-    //   headers: {
-    //     "x-rapidapi-key": process.env.RAPIDAPI_KEY || "",
-    //     "x-rapidapi-host": "youtube-transcript3.p.rapidapi.com",
-    //   },
-    // };
+    const options = {
+      method: "GET",
+      headers: {
+        "x-rapidapi-key": process.env.RAPIDAPI_KEY || "",
+        "x-rapidapi-host": "youtube-transcript3.p.rapidapi.com",
+      },
+    };
 
-    // const response = await fetch(parserUrl, options);
-    // const data = await response.json();
-    // const transcript = data.transcript;
+    const response = await fetch(parserUrl, options);
+    const data = await response.json();
+    const transcript = data.transcript;
 
-    const transcript = sample_transcript;
+    //const transcript = sample_transcript;
     console.log("-----------THIS IS THE TRANSCRIPT MAP");
     console.log(
-      `${transcript.map((t: { offset: string; text: string }) => `[${t.offset}] ${t.text}`).join("\n")}`,
+      `${transcript.map((t: { offset: string; text: string }) => `[${t.offset}] ${t.text}`).join("\n")}`
     );
-    //console.log("Transcript data:", transcript);
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
@@ -40,12 +39,12 @@ export async function POST(req: Request) {
       <VideoTranscript/>
 
     ANALYSIS REQUIREMENTS:
-1. Create descriptive topic titles that capture the specific subject matter
-2. Include speaker identification when possible (e.g., "John Smith discusses...", "The interviewer asks about...")
-3. Summarize key points, recommendations, or conclusions for each topic
-4. Use searchable keywords in descriptions
-5. Break down longer discussions into subtopics when appropriate
-6. Format timestamps as MM:SS or HH:MM:SS (convert seconds over 59 to minutes)
+      1. Create descriptive topic titles that capture the specific subject matter
+      2. Include speaker identification when possible (e.g., "John Smith discusses...", "The interviewer asks about...")
+      3. Summarize key points, recommendations, or conclusions for each topic
+      4. Use searchable keywords in descriptions
+      5. Break down longer discussions into subtopics when appropriate
+      6. Format timestamps as MM:SS or HH:MM:SS (convert seconds over 59 to minutes)
 
     CRITICAL: Your response must be raw JSON only. Do not use code blocks, markdown formatting, or any wrapper text. Start your response immediately with the opening brace.
 
@@ -105,7 +104,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
   } catch (error) {
     console.log("Error:", error);
@@ -119,7 +118,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
   }
 }
