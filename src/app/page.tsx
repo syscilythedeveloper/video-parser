@@ -35,6 +35,9 @@ export default function Home() {
       setIsLoading(false);
     }
   };
+  const handleChatTimeStampClick = (timestamp: string) => {
+    setVideoTimeStamp(timestamp);
+  };
   useEffect(() => {
     if (videoId && videoTimeStamp) {
       const newTimeStamp = handleVideoDisplay(videoTimeStamp, videoId);
@@ -176,6 +179,7 @@ export default function Home() {
               <ChatBox
                 topics={summary}
                 videoId={videoId || ""}
+                onTimestampClick={handleChatTimeStampClick}
               />
             )}
 

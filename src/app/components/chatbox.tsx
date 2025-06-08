@@ -11,9 +11,10 @@ import { TypeAnimation } from "react-type-animation";
 type ChatBoxProps = {
   videoId?: string;
   topics?: Summary;
+  onTimestampClick: (timestamp: string) => void;
 };
 
-const ChatBox = ({ videoId, topics }: ChatBoxProps) => {
+const ChatBox = ({ videoId, topics, onTimestampClick }: ChatBoxProps) => {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -141,7 +142,11 @@ const ChatBox = ({ videoId, topics }: ChatBoxProps) => {
                           sequence={["...", 100, "...", 100, "...", 100]}
                         />
                       ) : (
-                        renderContentWithTimestamps(message.content)
+                        renderContentWithTimestamps(
+                          message.content,
+                          videoId ?? "",
+                          onTimestampClick
+                        )
                       )}
                     </Box>
                   </Box>
