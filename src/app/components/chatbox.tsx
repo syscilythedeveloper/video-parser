@@ -74,8 +74,8 @@ const ChatBox = ({ videoId, topics }: ChatBoxProps) => {
         }
       }
       console.log("Video ID:", videoId);
-      console.log("Topics:", topics?.topics);
-      console.log("Message sent and response received successfully");
+      // console.log("Topics:", topics?.topics);
+      // console.log("Message sent and response received successfully");
     } catch (error) {
       console.error("Failed to send or receive message:", error);
     }
@@ -105,7 +105,12 @@ const ChatBox = ({ videoId, topics }: ChatBoxProps) => {
             boxShadow: 3,
           }}
         >
-          <Stack direction="column" border="1px solid black" p={2} spacing={3}>
+          <Stack
+            direction="column"
+            border="1px solid black"
+            p={2}
+            spacing={3}
+          >
             <Stack
               direction="column"
               spacing={2}
@@ -144,14 +149,20 @@ const ChatBox = ({ videoId, topics }: ChatBoxProps) => {
               })}
               <div ref={messagesEndRef} />
             </Stack>
-            <Stack direction="row" spacing={2}>
+            <Stack
+              direction="row"
+              spacing={2}
+            >
               <TextField
                 label="Message"
                 fullWidth
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
-              <Button variant="contained" onClick={sendMessage}>
+              <Button
+                variant="contained"
+                onClick={sendMessage}
+              >
                 Send
               </Button>
             </Stack>
