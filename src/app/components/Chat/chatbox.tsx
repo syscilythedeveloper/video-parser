@@ -19,7 +19,7 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
     {
       role: "assistant",
       content:
-        "Ask questions about the video, and I will do my best to answer them based on the content of the video.",
+        "What questions do you have about the video? You can ask about specific topics, events, or details mentioned in the video.",
     },
   ]);
   const [message, setMessage] = useState("");
@@ -96,20 +96,26 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
-          className="prose prose-lg max-w-none max-h-80 overflow-y-auto"
+          className="prose prose-lg max-w-none max-h-100 overflow-y-auto"
           sx={{
             backgroundColor: "white",
             borderRadius: 2,
             boxShadow: 3,
           }}
         >
-          <Stack direction="column" border="1px solid black" p={2} spacing={3}>
+          <Stack
+            direction="column"
+            p={2}
+            spacing={3}
+          >
             <Stack
               direction="column"
               spacing={2}
               flexGrow={1}
-              overflow="auto"
-              maxHeight="100%"
+              // overflow="auto"
+              width="100%"
+              className="bg-white/95 rounded-xl p-6 prose prose-lg max-w-none max-h-80 overflow-y-auto"
+              style={{ minHeight: 0 }}
             >
               {messages.map((message, index) => {
                 const isLast = index === messages.length - 1;
@@ -136,7 +142,7 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
                       ) : (
                         renderContentWithTimestamps(
                           message.content,
-                          onTimestampClick,
+                          onTimestampClick
                         )
                       )}
                     </Box>
@@ -145,14 +151,26 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
               })}
               <div ref={messagesEndRef} />
             </Stack>
-            <Stack direction="row" spacing={2}>
+            <Stack
+              direction="row"
+              spacing={2}
+            >
               <TextField
                 label="Message"
                 fullWidth
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                  }
+                }}
               />
-              <Button variant="contained" onClick={sendMessage}>
+              <Button
+                variant="contained"
+                onClick={sendMessage}
+              >
                 Send
               </Button>
             </Stack>
