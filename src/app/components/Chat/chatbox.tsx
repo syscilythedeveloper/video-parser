@@ -103,12 +103,7 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
             boxShadow: 3,
           }}
         >
-          <Stack
-            direction="column"
-            border="1px solid black"
-            p={2}
-            spacing={3}
-          >
+          <Stack direction="column" border="1px solid black" p={2} spacing={3}>
             <Stack
               direction="column"
               spacing={2}
@@ -141,7 +136,7 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
                       ) : (
                         renderContentWithTimestamps(
                           message.content,
-                          onTimestampClick
+                          onTimestampClick,
                         )
                       )}
                     </Box>
@@ -150,20 +145,14 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
               })}
               <div ref={messagesEndRef} />
             </Stack>
-            <Stack
-              direction="row"
-              spacing={2}
-            >
+            <Stack direction="row" spacing={2}>
               <TextField
                 label="Message"
                 fullWidth
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
-              <Button
-                variant="contained"
-                onClick={sendMessage}
-              >
+              <Button variant="contained" onClick={sendMessage}>
                 Send
               </Button>
             </Stack>

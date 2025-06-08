@@ -81,11 +81,11 @@ export default function Home() {
                     value={youtubeLink}
                     onChange={(e) => {
                       setVideoId(
-                        `${e.target.value.split("v=")[1]?.split("&")[0]}`
+                        `${e.target.value.split("v=")[1]?.split("&")[0]}`,
                       );
                       setYoutubeLink(e.target.value);
                       setEmbedSrc(
-                        `https://www.youtube.com/embed/${e.target.value.split("v=")[1]?.split("&")[0]}`
+                        `https://www.youtube.com/embed/${e.target.value.split("v=")[1]?.split("&")[0]}`,
                       );
                     }}
                     className="w-full px-6 py-4 text-lg bg-white/90 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-500/30 focus:border-purple-500 transition-all duration-200 placeholder-gray-500"

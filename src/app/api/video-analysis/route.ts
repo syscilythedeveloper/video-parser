@@ -1,16 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-//import { sample_transcript } from "./sample_transcript";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-
     const videoId = body.videoId;
-
-    console.log("Video ID arg:", videoId);
-
     const parserUrl = `https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=${videoId}`;
-    console.log("Parser URL:", parserUrl);
 
     const options = {
       method: "GET",
@@ -23,12 +17,6 @@ export async function POST(req: Request) {
     const response = await fetch(parserUrl, options);
     const data = await response.json();
     const transcript = data.transcript;
-
-    //const transcript = sample_transcript;
-    console.log("-----------THIS IS THE TRANSCRIPT MAP");
-    console.log(
-      `${transcript.map((t: { offset: string; text: string }) => `[${t.offset}] ${t.text}`).join("\n")}`
-    );
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
