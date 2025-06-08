@@ -1,34 +1,39 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-//import { sample_transcript } from "./sample_transcript";
+import { sample_transcript } from "./sample_transcript";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const url = body.url;
-    console.log("Received body:", url);
-    const videoId = url.split("v=")[1].split("&")[0];
-    console.log("Extracted video ID:", videoId);
 
-    const parserUrl = `https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=${videoId}`;
-    console.log("Parser URL:", parserUrl);
+    const videoId = body.videoId;
 
-    const options = {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": process.env.RAPIDAPI_KEY || "",
-        "x-rapidapi-host": "youtube-transcript3.p.rapidapi.com",
-      },
-    };
+    console.log("Video ID arg:", videoId);
 
-    const response = await fetch(parserUrl, options);
-    const data = await response.json();
-    const transcript = data.transcript;
-    console.log("Transcript data:", transcript);
-    // const transcript = sample_transcript;
+    // const parserUrl = `https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=${videoId}`;
+    // console.log("Parser URL:", parserUrl);
+
+    // const options = {
+    //   method: "GET",
+    //   headers: {
+    //     "x-rapidapi-key": process.env.RAPIDAPI_KEY || "",
+    //     "x-rapidapi-host": "youtube-transcript3.p.rapidapi.com",
+    //   },
+    // };
+
+    // const response = await fetch(parserUrl, options);
+    // const data = await response.json();
+    // const transcript = data.transcript;
+
+    const transcript = sample_transcript;
+    console.log("-----------THIS IS THE TRANSCRIPT MAP");
+    console.log(
+      `${transcript.map((t: { offset: string; text: string }) => `[${t.offset}] ${t.text}`).join("\n")}`
+    );
+    //console.log("Transcript data:", transcript);
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
-    const prompt = `Analyze the following transcript and providea breakdown of the main topics that are discussed in the video,   with timestamps for each topic..  
+    const prompt = `Analyze the following transcript and providea breakdown of the main topics that are discussed in the video,   with timestamps for each topic... Note that the offsets in the transcripts are in seconds, so you will need to convert them to MM:SS or HH:MM:SS format.   
       <VideoTranscript>
       ${transcript.map((t: { offset: string; text: string }) => `[${t.offset}] ${t.text}`).join("\n")}
 
@@ -42,7 +47,7 @@ export async function POST(req: Request) {
 5. Break down longer discussions into subtopics when appropriate
 6. Format timestamps as MM:SS or HH:MM:SS (convert seconds over 59 to minutes)
 
-    CRITICAL: Your response must be raw JSON only. Do not use code blocks, markdown formatting, or any wrapper text. Start your response immediately with the opening brace. If the seconds are over 59, format them as minutes and seconds. For example, 93 seconds should be formatted as 01:33.{
+    CRITICAL: Your response must be raw JSON only. Do not use code blocks, markdown formatting, or any wrapper text. Start your response immediately with the opening brace.
 
     Required JSON format: 
     {
@@ -100,7 +105,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
   } catch (error) {
     console.log("Error:", error);
@@ -114,7 +119,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
   }
 }

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 
 import ChatBox from "./components/chatbox";
+import { VideoPlayer } from "./components/video-player";
 export type Topic = { timestamp: string; topic: string };
 export type Summary = { topics: Topic[] } | null;
 
@@ -9,6 +10,8 @@ export default function Home() {
   const [youtubeLink, setYoutubeLink] = useState("");
   const [summary, setSummary] = useState<Summary>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [embedSrc, setEmbedSrc] = useState("");
+  const [videoId, setVideoId] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +22,7 @@ export default function Home() {
       const res = await fetch("/api/video-analysis", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: youtubeLink }),
+        body: JSON.stringify({ videoId: videoId }),
       });
       const data = await res.json();
       setSummary(data.summary);
@@ -30,16 +33,25 @@ export default function Home() {
       setIsLoading(false);
     }
   };
-  const handleVideoTimestampClick = (timestamp: string) => {
+
+  const handleVideoDisplay = (timestamp: string) => {
     console.log(`Clicked on timestamp: ${timestamp}`);
     const timeAsNumber = timestamp
       .split(":")
       .reduce((acc, time) => acc * 60 + parseInt(time), 0);
 
     console.log(`Time in seconds: ${timeAsNumber}`);
+    // const new_src = `https://www.youtube.com/embed/${
+    //   youtubeLink.split("v=")[1]?.split("&")[0]
+    const new_src = `https://www.youtube.com/embed/${
+      videoId
+    }?start=${timeAsNumber}`;
+    console.log("New YouTube embed link:", new_src);
+    setEmbedSrc(new_src);
   };
 
   useEffect(() => {}, [summary]);
+  useEffect(() => {}, [videoId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -74,7 +86,15 @@ export default function Home() {
                     type="text"
                     placeholder="Paste your YouTube video URL here..."
                     value={youtubeLink}
-                    onChange={(e) => setYoutubeLink(e.target.value)}
+                    onChange={(e) => {
+                      setVideoId(
+                        `${e.target.value.split("v=")[1]?.split("&")[0]}`
+                      );
+                      setYoutubeLink(e.target.value);
+                      setEmbedSrc(
+                        `https://www.youtube.com/embed/${e.target.value.split("v=")[1]?.split("&")[0]}`
+                      );
+                    }}
                     className="w-full px-6 py-4 text-lg bg-white/90 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-500/30 focus:border-purple-500 transition-all duration-200 placeholder-gray-500"
                     disabled={isLoading}
                   />
@@ -114,20 +134,22 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            {youtubeLink && (
+            {embedSrc && (
               <div className="mb-8 flex justify-center">
-                <iframe
+                {/* <iframe
                   width="560"
                   height="315"
-                  src={`https://www.youtube.com/embed/${
-                    youtubeLink.split("v=")[1]?.split("&")[0] || ""
-                  }`}
+                  // src={`https://www.youtube.com/embed/${
+                  //   youtubeLink.split("v=")[1]?.split("&")[0]
+                  // }`}
+                  src={embedSrc}
                   title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className="rounded-xl shadow-lg w-full max-w-2xl aspect-video"
-                ></iframe>
+                ></iframe> */}
+                <VideoPlayer src={embedSrc} />
               </div>
             )}
 
@@ -154,7 +176,7 @@ export default function Home() {
                               aria-label={`Jump to timestamp ${topic.timestamp}`}
                               title={`Jump to timestamp ${topic.timestamp}`}
                               onClick={() =>
-                                handleVideoTimestampClick(topic.timestamp)
+                                handleVideoDisplay(topic.timestamp)
                               }
                               className="text-gray-900 font-semibold bg-gray-200 border border-gray-400 rounded px-3 py-1 mr-2 shadow hover:bg-gray-300 hover:shadow-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                             >
@@ -177,7 +199,7 @@ export default function Home() {
             {summary && summary.topics && (
               <ChatBox
                 topics={summary}
-                videoId={youtubeLink.split("v=")[1]?.split("&")[0] || ""}
+                videoId={videoId || ""}
               />
             )}
 
