@@ -1,0 +1,19 @@
+export function timeFormatter(timestamp) {
+  const timeAsNumber = timestamp
+    .split(":")
+    .reduce((acc, time) => acc * 60 + parseInt(time), 0);
+
+  return timeAsNumber;
+}
+
+export default function handleVideoDisplay(timestamp, videoId) {
+  const timeAsNumber = timeFormatter(timestamp);
+
+  console.log(`Time in seconds: ${timeAsNumber}`);
+
+  const new_src = `https://www.youtube.com/embed/${
+    videoId
+  }?start=${timeAsNumber}`;
+  console.log("New YouTube embed link:", new_src);
+  return new_src;
+}

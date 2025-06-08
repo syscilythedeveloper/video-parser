@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import ChatBox from "./components/chatbox";
 import { VideoPlayer } from "./components/video-player";
-import timeFormatter from "./utils/timeFormatter";
+import handleVideoDisplay from "./utils/videoDisplay";
 export type Topic = { timestamp: string; topic: string };
 export type Summary = { topics: Topic[] } | null;
 
@@ -13,6 +13,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [embedSrc, setEmbedSrc] = useState("");
   const [videoId, setVideoId] = useState("");
+  const [videoTimeStamp, setVideoTimeStamp] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,18 +35,13 @@ export default function Home() {
       setIsLoading(false);
     }
   };
+  useEffect(() => {
+    if (videoId && videoTimeStamp) {
+      const newTimeStamp = handleVideoDisplay(videoTimeStamp, videoId);
 
-  const handleVideoDisplay = (timestamp: string) => {
-    const timeAsNumber = timeFormatter(timestamp);
-
-    console.log(`Time in seconds: ${timeAsNumber}`);
-
-    const new_src = `https://www.youtube.com/embed/${
-      videoId
-    }?start=${timeAsNumber}`;
-    console.log("New YouTube embed link:", new_src);
-    setEmbedSrc(new_src);
-  };
+      setEmbedSrc(newTimeStamp);
+    }
+  }, [videoTimeStamp, videoId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -156,9 +152,8 @@ export default function Home() {
                               type="button"
                               aria-label={`Jump to timestamp ${topic.timestamp}`}
                               title={`Jump to timestamp ${topic.timestamp}`}
-                              onClick={() =>
-                                handleVideoDisplay(topic.timestamp)
-                              }
+                              onClick={() => setVideoTimeStamp(topic.timestamp)}
+                              disabled={!videoId}
                               className="text-gray-900 font-semibold bg-gray-200 border border-gray-400 rounded px-3 py-1 mr-2 shadow hover:bg-gray-300 hover:shadow-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                             >
                               <strong>{topic.timestamp}</strong>
