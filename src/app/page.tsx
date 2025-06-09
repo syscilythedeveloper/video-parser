@@ -35,6 +35,11 @@ export default function Home() {
       setIsLoading(false);
     }
   };
+  function isValidYouTubeUrl(url: string) {
+    const regex =
+      /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]{11}(&.*)?$/;
+    return regex.test(url.trim());
+  }
   const handleChatTimeStampClick = (timestamp: string) => {
     setVideoTimeStamp(timestamp);
   };
@@ -91,10 +96,15 @@ export default function Home() {
                     className="w-full px-6 py-4 text-lg bg-white/90 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-500/30 focus:border-purple-500 transition-all duration-200 placeholder-gray-500"
                     disabled={isLoading}
                   />
+                  {youtubeLink && !isValidYouTubeUrl(youtubeLink) && (
+                    <p className="text-red-500 mt-2 text-sm">
+                      Please enter a valid YouTube video URL.
+                    </p>
+                  )}
                 </div>
                 <button
                   onClick={handleSubmit}
-                  disabled={isLoading || !youtubeLink.trim()}
+                  disabled={isLoading || !isValidYouTubeUrl(youtubeLink)}
                   className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-pink-700 focus:outline-none focus:ring-4 focus:ring-purple-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px] flex items-center justify-center"
                 >
                   {isLoading ? (
