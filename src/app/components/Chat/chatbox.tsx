@@ -81,16 +81,9 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
 
   return (
     <>
-      <div className="flex items-center mb-4">
-        <TiMessageTyping />
-
-        <h2 className="text-xl font-semibold text-gray-800">
-          Ask Questions About the Video
-        </h2>
-      </div>
       <div className="mb-4">
         <Box
-          width="825px"
+          width="100%"
           height="100vh"
           display="flex"
           flexDirection="column"
@@ -108,6 +101,10 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
             p={2}
             spacing={3}
           >
+            <div className="flex items-center mb-4 sticky top-0 z-10 bg-white/95 rounded-xl p-2">
+              <TiMessageTyping className="text-2xl text-purple-500 mr-2" />
+              <h1 className="text-2xl font-bold">Chat with AI</h1>
+            </div>
             <Stack
               direction="column"
               spacing={2}
@@ -154,6 +151,7 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
             <Stack
               direction="row"
               spacing={2}
+              className="sticky bottom-0 z-10 bg-white/95 rounded-b-xl p-2"
             >
               <TextField
                 label="Message"

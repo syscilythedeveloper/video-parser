@@ -69,7 +69,7 @@ export default function Home() {
         </div>
 
         {/* Main Content Card */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-10xl mx-auto">
           <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-8">
             {/* Input Section */}
             <div className="mb-8">
@@ -81,11 +81,11 @@ export default function Home() {
                     value={youtubeLink}
                     onChange={(e) => {
                       setVideoId(
-                        `${e.target.value.split("v=")[1]?.split("&")[0]}`,
+                        `${e.target.value.split("v=")[1]?.split("&")[0]}`
                       );
                       setYoutubeLink(e.target.value);
                       setEmbedSrc(
-                        `https://www.youtube.com/embed/${e.target.value.split("v=")[1]?.split("&")[0]}`,
+                        `https://www.youtube.com/embed/${e.target.value.split("v=")[1]?.split("&")[0]}`
                       );
                     }}
                     className="w-full px-6 py-4 text-lg bg-white/90 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-500/30 focus:border-purple-500 transition-all duration-200 placeholder-gray-500"
@@ -133,53 +133,58 @@ export default function Home() {
               </div>
             )}
 
-            {/* Summary Display */}
             {summary && (
-              <div className="bg-white/95 rounded-xl p-6 border border-gray-200 shadow-lg">
-                <div className="flex items-center mb-4">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Video Summary
-                  </h2>
-                </div>
-                <div className="prose prose-lg max-w-none max-h-80 overflow-y-auto">
-                  {summary && summary.topics && (
-                    <div>
-                      {summary.topics.map((topic, idx) => (
-                        <p
-                          key={idx}
-                          className="text-gray-700 leading-relaxed text-lg"
-                        >
-                          <span className="flex items-center">
-                            <button
-                              type="button"
-                              aria-label={`Jump to timestamp ${topic.timestamp}`}
-                              title={`Jump to timestamp ${topic.timestamp}`}
-                              onClick={() => setVideoTimeStamp(topic.timestamp)}
-                              disabled={!videoId}
-                              className="text-gray-900 font-semibold bg-gray-200 border border-gray-400 rounded px-3 py-1 mr-2 shadow hover:bg-gray-300 hover:shadow-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
-                            >
-                              <strong>{topic.timestamp}</strong>
-                            </button>{" "}
+              <div className="flex flex-col md:flex-row gap-8 mt-8">
+                {/* Video Summary */}
+                <div className="flex-1 bg-white/95 rounded-xl p-6 border border-gray-200 shadow-lg min-w-[320px] max-w-xl">
+                  <div className="flex items-center mb-4">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      Video Summary
+                    </h2>
+                  </div>
+                  <div className="prose prose-lg max-w-none max-h-80 overflow-y-auto">
+                    {summary.topics && (
+                      <div>
+                        {summary.topics.map((topic, idx) => (
+                          <p
+                            key={idx}
+                            className="text-gray-700 leading-relaxed text-lg"
+                          >
                             <span className="flex items-center">
-                              {topic.topic}
+                              <button
+                                type="button"
+                                aria-label={`Jump to timestamp ${topic.timestamp}`}
+                                title={`Jump to timestamp ${topic.timestamp}`}
+                                onClick={() =>
+                                  setVideoTimeStamp(topic.timestamp)
+                                }
+                                disabled={!videoId}
+                                className="text-gray-900 font-semibold bg-gray-200 border border-gray-400 rounded px-3 py-1 mr-2 shadow hover:bg-gray-300 hover:shadow-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                              >
+                                <strong>{topic.timestamp}</strong>
+                              </button>{" "}
+                              <span className="flex items-center">
+                                {topic.topic}
+                              </span>
+                              <br />
+                              <br />
                             </span>
-                            <br />
-                            <br />
-                          </span>
-                        </p>
-                      ))}
-                    </div>
-                  )}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* ChatBox */}
+                <div className="flex-1 bg-white/95 rounded-xl p-6 border border-gray-200 shadow-lg min-w-[320px] max-w-xl">
+                  <ChatBox
+                    topics={summary}
+                    onTimestampClick={handleChatTimeStampClick}
+                  />
                 </div>
               </div>
-            )}
-
-            {summary && summary.topics && (
-              <ChatBox
-                topics={summary}
-                onTimestampClick={handleChatTimeStampClick}
-              />
             )}
 
             {/* Loading State */}
