@@ -1,6 +1,6 @@
 "use client";
 import { Summary } from "../../page";
-import { renderContentWithTimestamps } from "./responseLinks";
+import { renderContentWithTimestamps } from "./FormattedResponses";
 
 import { Button, TextField } from "@mui/material";
 import { Box, Stack } from "@mui/system";
