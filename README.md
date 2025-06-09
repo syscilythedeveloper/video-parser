@@ -1,6 +1,6 @@
-# Video Parser
+# TubeChat
 
-Video Parser is a web app that generates a **timestamped summary** of any YouTube video and lets you **chat with an AI agent** about its content. Ask questions about the video, and the AI will answer with relevant timestamps. Clicking any timestamp (in the summary or chat) will automatically jump the video to that point.
+TubeChat is a web app that generates a **timestamped summary** of any YouTube video and lets you **chat with an AI agent** about its content. Ask questions about the video, and the AI will answer with relevant timestamps. Clicking any timestamp (in the summary or chat) will automatically jump the video to that point.
 
 ---
 
