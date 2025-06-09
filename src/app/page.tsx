@@ -69,7 +69,7 @@ export default function Home() {
         </div>
 
         {/* Main Content Card */}
-        <div className="max-w-10xl mx-auto">
+        <div className="max-w-10xl mx-auto ">
           <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-8">
             {/* Input Section */}
             <div className="mb-8">
@@ -134,7 +134,7 @@ export default function Home() {
             )}
 
             {summary && (
-              <div className="flex flex-col md:flex-row gap-8 mt-8">
+              <div className="flex justify-center md:flex-row gap-8 mt-8">
                 {/* Video Summary */}
                 <div className="flex-1 bg-white/95 rounded-xl p-6 border border-gray-200 shadow-lg min-w-[320px] max-w-xl">
                   <div className="flex items-center mb-4">

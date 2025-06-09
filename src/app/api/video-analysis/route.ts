@@ -3,7 +3,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+
     const videoId = body.videoId;
+
     const parserUrl = `https://youtube-transcript3.p.rapidapi.com/api/transcript?videoId=${videoId}`;
 
     const options = {
@@ -16,6 +18,7 @@ export async function POST(req: Request) {
 
     const response = await fetch(parserUrl, options);
     const data = await response.json();
+
     const transcript = data.transcript;
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
