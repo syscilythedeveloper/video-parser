@@ -1,38 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Video Parser
+
+Video Parser is a web app that generates a **timestamped summary** of any YouTube video and lets you **chat with an AI agent** about its content. Ask questions about the video, and the AI will answer with relevant timestamps. Clicking any timestamp (in the summary or chat) will automatically jump the video to that point.
+
+---
+
+## Features
+
+- 🎬 **YouTube Video Analysis**: Enter a YouTube URL to get a detailed, timestamped summary.
+- 🤖 **AI Chat**: Ask questions about the video; the AI answers with context and timestamps.
+- ⏱️ **Timestamp Navigation**: Click any timestamp to jump the video player to that moment.
+- 📋 **Clean, Responsive UI**: Modern design with Material UI and Tailwind CSS.
+
+---
+
+## Tech Stack
+
+- **Framework:** [Next.js](https://nextjs.org/) (React 19)
+- **UI:** [Material UI (MUI)](https://mui.com/), [Tailwind CSS](https://tailwindcss.com/)
+- **AI:** [Google Generative AI](https://ai.google.dev/) (`@google/generative-ai`)
+- **YouTube Transcript API:** [RapidAPI](https://rapidapi.com/)
+- **Icons:** [React Icons](https://react-icons.github.io/react-icons/)
+- **Animation:** [react-type-animation](https://www.npmjs.com/package/react-type-animation)
+- **Formatting:** [Prettier](https://prettier.io/)
+- **Linting:** [ESLint](https://eslint.org/)
+- **Type Checking:** [TypeScript](https://www.typescriptlang.org/)
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (v18+ recommended)
+- npm
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone the repository:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```sh
+   git clone https://github.com/your-username/video-parser.git
+   cd video-parser
+   ```
 
-## Learn More
+2. **Install dependencies:**
 
-To learn more about Next.js, take a look at the following resources:
+   ```sh
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Set up environment variables:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   Create a `.env.local` file in the root directory and add:
 
-## Deploy on Vercel
+   ```
+   GEMINI_API_KEY=your_google_gemini_api_key
+   RAPIDAPI_KEY=your_rapidapi_key
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   > Get your API keys from [Google AI Studio](https://aistudio.google.com/app/apikey) and [RapidAPI](https://rapidapi.com/).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Run the development server:**
 
-# video-parser
+   ```sh
+   npm run dev
+   ```
+
+5. **Open the app:**
+   Visit [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Usage
+
+1. **Paste a YouTube URL** into the input field.
+2. Click **"Analyze Video"**.
+3. View the **timestamped summary**.
+4. **Chat with the AI** about the video—ask about topics, events, or details.
+5. **Click any timestamp** in the summary or chat to jump the video to that moment.
+
+---
+
+## API Endpoints
+
+- `POST /api/video-analysis`
+  - **Body:** `{ videoId: string }`
+  - **Returns:** `{ summary: { topics: [{ timestamp, topic, ... }] } }`
+- `POST /api/chat`
+  - **Body:** Chat history, user question, and topics
+  - **Returns:** AI-generated answer with relevant timestamps
+
+---
+
+## Project Structure
+
+- `/src/app/components/Chat/chatbox.tsx` — Chat UI and logic
+- `/src/app/components/video-player.tsx` — Video player component
+- `/src/app/api/video-analysis/route.ts` — Video summary API
+- `/src/app/api/chat/route.ts` — AI chat API
+
+---
+
+## Contributing
+
+Pull requests welcome! For major changes, please open an issue first to discuss what you’d like to change.
+
+---
