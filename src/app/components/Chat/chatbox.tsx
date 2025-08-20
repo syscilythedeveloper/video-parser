@@ -81,99 +81,80 @@ const ChatBox = ({ topics, onTimestampClick }: ChatBoxProps) => {
 
   return (
     <>
-      <div className="mb-4">
-        <Box
-          width="100%"
-          height="100vh"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          className="prose prose-lg max-w-none max-h-100 overflow-y-auto"
-          sx={{
-            backgroundColor: "white",
-            borderRadius: 2,
-            boxShadow: 3,
-          }}
-        >
-          <Stack
-            direction="column"
-            p={2}
-            spacing={3}
-          >
-            <div className="flex items-center mb-4 sticky top-0 z-10 bg-white/95 rounded-xl p-2">
-              <TiMessageTyping className="text-2xl text-purple-500 mr-2" />
-              <h1 className="text-2xl font-bold">Chat with AI</h1>
-            </div>
-            <Stack
-              direction="column"
-              spacing={2}
-              flexGrow={1}
-              // overflow="auto"
-              width="100%"
-              className="bg-white/95 rounded-xl p-6 prose prose-lg max-w-none max-h-80 overflow-y-auto"
-              style={{ minHeight: 0 }}
-            >
-              {messages.map((message, index) => {
-                const isLast = index === messages.length - 1;
-                const isAssistant = message.role === "assistant";
-                const isLoading =
-                  isLast && isAssistant && message.content.trim() === "";
+      <div className="flex items-center mb-4">
+        <TiMessageTyping className="text-2xl text-purple-500 mr-2" />
+        <h1 className="text-2xl font-bold text-white">Chat with AI</h1>
+      </div>
 
-                return (
-                  <Box
-                    key={index}
-                    display="flex"
-                    justifyContent={isAssistant ? "flex-start" : "flex-end"}
-                  >
-                    <Box
-                      bgcolor={isAssistant ? "gray" : "purple"}
-                      color="white"
-                      borderRadius={16}
-                      p={3}
-                    >
-                      {isLoading ? (
-                        <TypeAnimation
-                          sequence={["...", 100, "...", 100, "...", 100]}
-                        />
-                      ) : (
-                        renderContentWithTimestamps(
-                          message.content,
-                          onTimestampClick
-                        )
-                      )}
-                    </Box>
-                  </Box>
-                );
-              })}
-              <div ref={messagesEndRef} />
-            </Stack>
-            <Stack
-              direction="row"
-              spacing={2}
-              className="sticky bottom-0 z-10 bg-white/95 rounded-b-xl p-2"
-            >
-              <TextField
-                label="Message"
-                fullWidth
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
-                  }
-                }}
-              />
-              <Button
-                variant="contained"
-                onClick={sendMessage}
+      <div className="flex flex-col h-full">
+        {/* Messages Area */}
+        <div
+          className="bg-gray-300 rounded-xl p-6 overflow-y-auto mb-4"
+          style={{ height: "500px" }}
+        >
+          {messages.map((message, index) => {
+            const isLast = index === messages.length - 1;
+            const isAssistant = message.role === "assistant";
+            const isLoading =
+              isLast && isAssistant && message.content.trim() === "";
+
+            return (
+              <Box
+                key={index}
+                display="flex"
+                justifyContent={isAssistant ? "flex-start" : "flex-end"}
+                mb={2}
               >
-                Send
-              </Button>
-            </Stack>
+                <Box
+                  bgcolor={isAssistant ? "blue" : "purple"}
+                  color="white"
+                  borderRadius={16}
+                  p={3}
+                  maxWidth="80%"
+                >
+                  {isLoading ? (
+                    <TypeAnimation
+                      sequence={["...", 100, "...", 100, "...", 100]}
+                    />
+                  ) : (
+                    renderContentWithTimestamps(
+                      message.content,
+                      onTimestampClick
+                    )
+                  )}
+                </Box>
+              </Box>
+            );
+          })}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input Area */}
+        <div className="bg-gray-300 rounded-xl p-4">
+          <Stack
+            direction="row"
+            spacing={2}
+          >
+            <TextField
+              label="Message"
+              fullWidth
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessage();
+                }
+              }}
+            />
+            <Button
+              variant="contained"
+              onClick={sendMessage}
+            >
+              Send
+            </Button>
           </Stack>
-        </Box>
+        </div>
       </div>
     </>
   );

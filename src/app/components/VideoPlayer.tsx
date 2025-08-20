@@ -3,7 +3,7 @@ export function VideoPlayer({ src }: { src: string }) {
     <iframe
       key={src}
       width="560"
-      height="400"
+      height="450"
       src={src}
       title="YouTube video player"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
