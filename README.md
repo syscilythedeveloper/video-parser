@@ -1,6 +1,8 @@
-# TubeChat
+# VidSense.ai
 
-TubeChat is a web app that generates a **timestamped summary** of any YouTube video and lets you **chat with an AI agent** about its content. Ask questions about the video, and the AI will answer with relevant timestamps. Clicking any timestamp (in the summary or chat) will automatically jump the video to that point.
+Problem: YouTube is one of the best tools for visual learners, but it takes time to watch full videos — and speeding them up often makes content hard to follow.
+
+Solution: VidSense AI helps you understand videos faster. It generates timestamped summaries and lets you chat with an AI agent that answers questions with direct links to the right moments.
 
 ---
 

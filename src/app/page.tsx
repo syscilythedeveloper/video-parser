@@ -55,23 +55,34 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <div className="container mx-auto px-4 py-12">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-red-500 rounded-full mb-6">
+        <header className="text-center mb-12">
+          <div
+            className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6
+               bg-gradient-to-br from-indigo-500 to-violet-500 shadow-lg shadow-indigo-900/30"
+            aria-hidden="true"
+          >
             <svg
               className="w-8 h-8 text-white"
-              fill="currentColor"
               viewBox="0 0 24 24"
+              fill="currentColor"
             >
-              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+              <path d="M8 5.14v13.72L19 12 8 5.14z" />
             </svg>
           </div>
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            YouTube Video Analyzer
+
+          <h1 className="text-5xl font-bold mb-3 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            VidSense AI
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Get instant AI-powered summaries and insights from any YouTube video
+
+          <p className="text-xl text-gray-300/90 max-w-2xl mx-auto">
+            Summaries, timestamps, answers — smarter video learning.
           </p>
-        </div>
+
+          <span className="sr-only">
+            Understand YouTube videos faster with AI-powered summaries and
+            time-linked answers.
+          </span>
+        </header>
 
         {/* Main Content Card */}
         <div className="max-w-10xl mx-auto ">

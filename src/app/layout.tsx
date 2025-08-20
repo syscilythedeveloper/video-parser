@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TubeChat",
+  title: "VidSense.ai",
   description:
-    "Tube Chat is a tool that helps you extract insights from videos using AI.",
+    "VidSense.ai is a tool that helps you extract insights from videos using AI.",
 };
 
 export default function RootLayout({
